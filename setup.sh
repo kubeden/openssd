@@ -15,4 +15,4 @@ apt install docker-compose
 mkdir /var/www
 mkdir /var/www/openssd
 
-git clone https://github.com/kubeden/openssd.git /var/www/openssd
+git clone https://github.com/kubeden/openssd.git /var/www/openssd/.
