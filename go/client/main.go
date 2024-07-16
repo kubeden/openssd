@@ -1,14 +1,15 @@
-package main
+package client
 
 import (
+	"html/template"
 	"log"
 	"net/http"
-
-	"github.com/kubeden/openssd/templates"
+	"path/filepath"
 
 	"github.com/gorilla/mux"
 )
 
+// StartServer initializes and starts the client server
 func StartServer() error {
 	r := mux.NewRouter()
 
@@ -19,44 +20,53 @@ func StartServer() error {
 
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 
+	log.Println("Client server starting on :8080")
 	return http.ListenAndServe(":8080", r)
 }
 
-func main() {
-	r := mux.NewRouter()
+func renderTemplate(w http.ResponseWriter, tmpl string, data map[string]interface{}) {
+	layoutFile := filepath.Join("templates", "default", "layout.html")
+	pageFile := filepath.Join("templates", "default", tmpl+".html")
 
-	r.HandleFunc("/", handleIndex)
-	r.HandleFunc("/blog", handleBlog)
-	r.HandleFunc("/blog/{slug}", handleArticle)
-	r.HandleFunc("/info", handleInfo)
+	t, err := template.ParseFiles(layoutFile, pageFile)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
-
-	log.Println("Client server starting on :8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	err = t.ExecuteTemplate(w, "layout", data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling index request")
-	templates.Index().Render(r.Context(), w)
+	renderTemplate(w, "index", map[string]interface{}{
+		"Title": "Welcome",
+	})
 }
 
 func handleBlog(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling blog request")
-	// TODO: Implement Blog template
-	w.Write([]byte("Blog page"))
+	renderTemplate(w, "blog", map[string]interface{}{
+		"Title": "Blog Posts",
+	})
 }
 
 func handleArticle(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	slug := vars["slug"]
 	log.Printf("Handling article request for slug: %s", slug)
-	// TODO: Implement Article template
-	w.Write([]byte("Article page for " + slug))
+	renderTemplate(w, "article", map[string]interface{}{
+		"Title": "Article: " + slug,
+		"Slug":  slug,
+	})
 }
 
 func handleInfo(w http.ResponseWriter, r *http.Request) {
 	log.Println("Handling info request")
-	// TODO: Implement Info template
-	w.Write([]byte("Info page"))
+	renderTemplate(w, "info", map[string]interface{}{
+		"Title": "About This Blog",
+	})
 }

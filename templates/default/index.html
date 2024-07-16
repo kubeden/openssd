@@ -1,20 +1,21 @@
 {{define "content"}}
-<h1 class="text-4xl font-bold mb-8">Blog Posts</h1>
+<h1 class="text-4xl font-bold mb-8">Welcome to My Blog</h1>
 
-<div id="all-articles" hx-get="http://localhost:8081/api/articles" hx-trigger="load" hx-swap="innerHTML">
-    <p>Loading articles...</p>
+<div id="latest-articles" hx-get="http://localhost:8081/api/articles" hx-trigger="load" hx-swap="innerHTML">
+    <p>Loading latest articles...</p>
 </div>
 
 <script>
     document.addEventListener('htmx:afterSwap', function(event) {
-        if (event.detail.target.id === 'all-articles') {
+        if (event.detail.target.id === 'latest-articles') {
             console.log('HTMX swap occurred');
             try {
                 let articles = JSON.parse(event.detail.xhr.response);
                 console.log('Parsed articles:', articles);
+                let latestArticles = articles.slice(0, 3);
                 let html = '';
                 
-                articles.forEach(article => {
+                latestArticles.forEach(article => {
                     html += `
                         <article class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
                             <div class="p-6">

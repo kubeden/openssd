@@ -1,4 +1,4 @@
-package main
+package api
 
 import (
 	"encoding/json"
@@ -27,22 +27,38 @@ type Article struct {
 var articles []Article
 
 func StartServer() error {
-	r := mux.NewRouter()
-	r.HandleFunc("/api/articles", getArticles).Methods("GET")
-	r.HandleFunc("/api/articles/{slug}", getArticle).Methods("GET")
-
-	return http.ListenAndServe(":8081", r)
-}
-
-func main() {
+	// Load articles before starting the server
 	loadArticles()
 
 	r := mux.NewRouter()
-	r.HandleFunc("/api/articles", getArticles).Methods("GET")
-	r.HandleFunc("/api/articles/{slug}", getArticle).Methods("GET")
+
+	// Add a middleware to handle CORS
+	r.Use(corsMiddleware)
+
+	r.HandleFunc("/api/articles", getArticles).Methods("GET", "OPTIONS")
+	r.HandleFunc("/api/articles/{slug}", getArticle).Methods("GET", "OPTIONS")
 
 	log.Println("API server starting on :8081")
-	log.Fatal(http.ListenAndServe(":8081", r))
+	return http.ListenAndServe(":8081", r)
+}
+
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Set CORS headers
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, HX-Request, HX-Trigger, HX-Target, HX-Current-URL")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+
+		// Handle preflight requests
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Call the next handler
+		next.ServeHTTP(w, r)
+	})
 }
 
 func loadArticles() {
@@ -93,7 +109,12 @@ func parseArticle(filename string) (Article, error) {
 
 func getArticles(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(articles)
+	if err := json.NewEncoder(w).Encode(articles); err != nil {
+		log.Printf("Error encoding articles: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	log.Printf("Sent %d articles", len(articles))
 }
 
 func getArticle(w http.ResponseWriter, r *http.Request) {

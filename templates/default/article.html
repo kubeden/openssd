@@ -1,21 +1,33 @@
-{{ define "content" }}
-<article class="max-w-3xl mx-auto">
-    <div id="article-content" hx-get="http://localhost:8081/api/articles/{{ .Slug }}" hx-trigger="load" hx-target="#article-content" hx-swap="innerHTML">
-        <p>Loading article...</p>
-    </div>
-</article>
+{{define "content"}}
+<div id="article-content" hx-get="http://localhost:8081/api/articles/{{.Slug}}" hx-trigger="load" hx-swap="innerHTML">
+    <p>Loading article...</p>
+</div>
 
 <script>
-    htmx.on('#article-content', 'htmx:afterSwap', function(event) {
-        let article = JSON.parse(event.detail.xhr.response);
-        let html = `
-            <h1 class="text-4xl font-bold mb-4">${article.title}</h1>
-            <p class="text-gray-600 mb-8">${new Date(article.date).toLocaleDateString()}</p>
-            <div class="prose lg:prose-xl">
-                ${article.content}
-            </div>
-        `;
-        event.detail.target.innerHTML = html;
+    document.addEventListener('htmx:afterSwap', function(event) {
+        if (event.detail.target.id === 'article-content') {
+            console.log('HTMX swap occurred');
+            try {
+                let article = JSON.parse(event.detail.xhr.response);
+                console.log('Parsed article:', article);
+                let html = `
+                    <article class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+                        <div class="p-6">
+                            <h1 class="text-3xl font-bold mb-4">${article.title}</h1>
+                            <p class="text-gray-600 mb-4">${new Date(article.date).toLocaleDateString()}</p>
+                            <div class="prose lg:prose-xl">
+                                ${article.content}
+                            </div>
+                        </div>
+                    </article>
+                `;
+                
+                event.detail.target.innerHTML = html;
+            } catch (error) {
+                console.error('Error processing response:', error);
+                event.detail.target.innerHTML = '<p>Error loading article. Please try again later.</p>';
+            }
+        }
     });
 </script>
-{{ end }}
+{{end}}
