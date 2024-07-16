@@ -1,28 +1,12 @@
 # openssd
+
 Openssd stands for Open (source) Super Simple Diary. Openssd is a plug-n-run project to host a version of yourself on the webternet.
-
-## Features
-
-- Markdown-based articles stored in a Git repository
-- Responsive design using Tailwind CSS
-- Dynamic content loading with HTMX
-- Docker-based deployment for easy setup
 
 ## Prerequisites
 
-- Git
-- Docker and Docker Compose (installed automatically by the installation script)
+1. Debian or Ubuntu internet-facing virtual machine
 
 ## Installation
-
-### Linux
-
-1. Open a terminal
-2. Run the following command:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/yourusername/blog-project/main/scripts/install_linux.sh | bash
-```
 
 ### macOS
 
