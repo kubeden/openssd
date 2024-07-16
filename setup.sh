@@ -13,4 +13,6 @@ apt install docker.io
 apt install docker-compose
 
 mkdir /var/www
-git clone https://github.com/kubeden/openssd.git /var/www
+mkdir /var/www/openssd
+
+git clone https://github.com/kubeden/openssd.git /var/www/openssd
