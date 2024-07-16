@@ -1,0 +1,8 @@
+{{define "content"}}
+<div class="max-w-7xl mx-auto">
+
+    <div class="markdown-body p-4 rounded-md roboto-mono" id="readme-content" hx-get="http://localhost:8081/api/readme" hx-trigger="load" hx-swap="innerHTML">
+        <p>Loading README content...</p>
+    </div>
+</div>
+{{end}}

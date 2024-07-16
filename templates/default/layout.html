@@ -6,14 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}} - My Blog</title>
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.6.1/github-markdown-light.css" integrity="sha512-tVO0ZLV54CEoiM+i1hvfZGcopGR3rxyyC3L2/P/6NRTVXlrp4OKyTFunluVG1BRNasDLnm6ZRPDKBGM0CkS99Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gray-100">
-    <nav class="bg-white shadow-md mb-4">
+    <nav class="bg-white mb-4 max-w-7xl mx-auto sticky top-2 z-10 border-b">
         <div class="container mx-auto px-6 py-3">
             <div class="flex justify-between items-center">
                 <div>
-                    <a href="/" class="text-gray-800 text-xl font-bold">My Blog</a>
+                    <a class="text-base flex flex-row items-center justify-center gap-x-1" href="https://x.com/{{.XUserName}}">
+                        <span class="fa-brands fa-x-twitter"></span>
+                        <span> / <span class="user-set-name">{{.XUserFullName}}</span></span>
+                        <img class="w-4 h-4" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Twitter_Verified_Badge.svg/1200px-Twitter_Verified_Badge.svg.png" alt="">
+                    </a>
                 </div>
                 <div>
                     <a href="/" class="text-gray-800 hover:text-gray-600 mx-2">Home</a>
@@ -28,9 +34,13 @@
         {{template "content" .}}
     </div>
 
-    <footer class="bg-white mt-8 py-4">
-        <div class="container mx-auto px-6">
-            <p class="text-center text-gray-600">&copy; 2024 My Blog. All rights reserved.</p>
+    <footer class="bg-white mt-4 py-4 max-w-7xl mx-auto">
+        <div class="container mx-auto px-6 flex flex-row gap-x-4 items-center justify-center">
+            <a class="text-base flex flex-row items-center justify-center gap-x-1" href="https://x.com/kubeden">
+                <span class="fa-brands fa-x-twitter"></span>
+                <span> / <span class="user-set-name">{{.XUserFullName}}</span></span>
+                <img class="w-4 h-4" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Twitter_Verified_Badge.svg/1200px-Twitter_Verified_Badge.svg.png" alt="">
+            </a>
         </div>
     </footer>
 </body>

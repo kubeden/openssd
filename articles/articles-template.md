@@ -5,8 +5,6 @@ slug: your-article-slug
 excerpt: A brief excerpt of your article (maximum 150 characters)
 ---
 
-# Your Article Title
-
 Your article content goes here. You can use all standard Markdown syntax.
 
 ## Subheading

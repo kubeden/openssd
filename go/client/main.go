@@ -6,11 +6,17 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/kubeden/openssd/types"
+
 	"github.com/gorilla/mux"
 )
 
+var config types.Config
+
 // StartServer initializes and starts the client server
-func StartServer() error {
+func StartServer(cfg types.Config) error {
+	config = cfg
+
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", handleIndex)
@@ -25,14 +31,18 @@ func StartServer() error {
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, data map[string]interface{}) {
-	layoutFile := filepath.Join("templates", "default", "layout.html")
-	pageFile := filepath.Join("templates", "default", tmpl+".html")
+	layoutFile := filepath.Join("templates", config.TemplateChoice, "layout.html")
+	pageFile := filepath.Join("templates", config.TemplateChoice, tmpl+".html")
 
 	t, err := template.ParseFiles(layoutFile, pageFile)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	// Add XUserFullName to the data map
+	data["XUserFullName"] = config.XUserFullName
+	data["XUserName"] = config.XUserName
 
 	err = t.ExecuteTemplate(w, "layout", data)
 	if err != nil {

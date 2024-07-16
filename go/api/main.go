@@ -11,6 +11,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/kubeden/openssd/types"
+
 	"github.com/adrg/frontmatter"
 	"github.com/gorilla/mux"
 	"github.com/russross/blackfriday/v2"
@@ -25,18 +27,20 @@ type Article struct {
 }
 
 var articles []Article
+var config types.Config
 
-func StartServer() error {
-	// Load articles before starting the server
+func StartServer(cfg types.Config) error {
+	config = cfg
 	loadArticles()
 
 	r := mux.NewRouter()
 
-	// Add a middleware to handle CORS
 	r.Use(corsMiddleware)
 
 	r.HandleFunc("/api/articles", getArticles).Methods("GET", "OPTIONS")
 	r.HandleFunc("/api/articles/{slug}", getArticle).Methods("GET", "OPTIONS")
+	r.HandleFunc("/api/readme", getGithubReadme).Methods("GET", "OPTIONS")
+	r.HandleFunc("/api/info", getGithubInfo).Methods("GET", "OPTIONS")
 
 	log.Println("API server starting on :8081")
 	return http.ListenAndServe(":8081", r)
@@ -130,4 +134,37 @@ func getArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.NotFound(w, r)
+}
+
+func getGithubReadme(w http.ResponseWriter, r *http.Request) {
+	url := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/main/%s", config.GithubUsername, config.GithubRepo, config.ReadmeFile)
+	fetchAndServeMarkdown(w, r, url)
+}
+
+func getGithubInfo(w http.ResponseWriter, r *http.Request) {
+	url := fmt.Sprintf("https://raw.githubusercontent.com/%s/%s/main/%s", config.GithubUsername, config.GithubRepo, config.InfoFile)
+	fetchAndServeMarkdown(w, r, url)
+}
+
+func fetchAndServeMarkdown(w http.ResponseWriter, r *http.Request, url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Printf("Error fetching markdown: %v", err)
+		http.Error(w, "Failed to fetch markdown", http.StatusInternalServerError)
+		return
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Error reading markdown: %v", err)
+		http.Error(w, "Failed to read markdown", http.StatusInternalServerError)
+		return
+	}
+
+	// Convert markdown to HTML
+	html := blackfriday.Run(body)
+
+	w.Header().Set("Content-Type", "text/html")
+	w.Write(html)
 }

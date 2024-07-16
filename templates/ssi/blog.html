@@ -1,0 +1,44 @@
+{{define "content"}}
+<section class="max-w-7xl mx-auto">
+    <div class="px-5 py-4">
+        <h1 class="text-2xl font-bold">:= articles</h1>
+    </div>
+
+    <div id="all-articles" hx-get="http://localhost:8081/api/articles" hx-trigger="load" hx-swap="innerHTML">
+        <p>Loading articles...</p>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('htmx:afterSwap', function(event) {
+        if (event.detail.target.id === 'all-articles') {
+            console.log('HTMX swap occurred');
+            try {
+                let articles = JSON.parse(event.detail.xhr.response);
+                console.log('Parsed articles:', articles);
+                let html = '';
+                
+                articles.forEach(article => {
+                    html += `
+                        <article class="bg-white  rounded-lg overflow-hidden mb-8">
+                            <div class="p-6">
+                                <h2 class="text-2xl font-semibold mb-2">
+                                    <a href="/blog/${article.slug}" class="text-black hover:text-blue-800">${article.title}</a>
+                                </h2>
+                                <p class="text-gray-600 mb-4">${new Date(article.date).toLocaleDateString()}</p>
+                                <p class="text-gray-700">${article.excerpt}</p>
+                                <a href="/blog/${article.slug}" class="mt-4 inline-block text-blue-600 hover:text-blue-800">Read more &rarr;</a>
+                            </div>
+                        </article>
+                    `;
+                });
+                
+                event.detail.target.innerHTML = html;
+            } catch (error) {
+                console.error('Error processing response:', error);
+                event.detail.target.innerHTML = '<p>Error loading articles. Please try again later.</p>';
+            }
+        }
+    });
+</script>
+{{end}}

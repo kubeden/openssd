@@ -1,0 +1,11 @@
+{{define "content"}}
+<section class="max-w-7xl mx-auto">
+    <div class="px-2 py-1 mb-2">
+        <h1 class="text-2xl font-bold">:= info</h1>
+    </div>
+
+    <div class="roboto-mono markdown-body p-4 rounded-md" id="info-content" hx-get="http://localhost:8081/api/info" hx-trigger="load" hx-swap="innerHTML">
+        <p>Loading info content...</p>
+    </div>
+</section>
+{{end}}
