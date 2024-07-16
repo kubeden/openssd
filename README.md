@@ -44,6 +44,23 @@ Then when you have everything set up, run the following command:
 curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/start.sh | bash
 ```
 
+## Adding articles
+
+To add more articles to your website, navigate to `/var/www/openssd`
+
+```
+cd /var/www/openssd
+```
+
+and add your articles under the `/articles` directory.
+
+Then restart your application:
+
+```
+curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/stop.sh | bash
+curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/start.sh | bash
+```
+
 ## Setting a custom domain
 
 If you want to set a custom domain, go to your domain provider of choice and set the A record for
