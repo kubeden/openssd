@@ -26,8 +26,8 @@ func StartServer(cfg types.Config) error {
 
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./static"))))
 
-	log.Println("Client server starting on :8080")
-	return http.ListenAndServe(":8080", r)
+	log.Println("Client server starting on 0.0.0.0:8080")
+	return http.ListenAndServe("0.0.0.0:8080", r)
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, data map[string]interface{}) {

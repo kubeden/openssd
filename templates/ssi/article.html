@@ -1,6 +1,6 @@
 {{define "content"}}
 <section class="max-w-7xl mx-auto">
-    <div class="markdown-body roboto-mono" id="article-content" hx-get="http://localhost:8081/api/articles/{{.Slug}}" hx-trigger="load" hx-swap="innerHTML">
+    <div class="markdown-body roboto-mono" id="article-content" hx-get="/api/articles/{{.Slug}}" hx-trigger="load" hx-swap="innerHTML">
         <p>Loading article...</p>
     </div>
 </section>

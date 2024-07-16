@@ -4,7 +4,7 @@
         <h1 class="text-2xl font-bold">:= articles</h1>
     </div>
 
-    <div id="all-articles" hx-get="http://localhost:8081/api/articles" hx-trigger="load" hx-swap="innerHTML">
+    <div id="all-articles" hx-get="/api/articles" hx-trigger="load" hx-swap="innerHTML">
         <p>Loading articles...</p>
     </div>
 </section>

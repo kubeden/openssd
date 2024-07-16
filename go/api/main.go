@@ -42,8 +42,8 @@ func StartServer(cfg types.Config) error {
 	r.HandleFunc("/api/readme", getGithubReadme).Methods("GET", "OPTIONS")
 	r.HandleFunc("/api/info", getGithubInfo).Methods("GET", "OPTIONS")
 
-	log.Println("API server starting on :8081")
-	return http.ListenAndServe(":8081", r)
+	log.Println("API server starting on 0.0.0.0:8081")
+	return http.ListenAndServe("0.0.0.0:8081", r)
 }
 
 func corsMiddleware(next http.Handler) http.Handler {

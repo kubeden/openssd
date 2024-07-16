@@ -4,7 +4,7 @@
         <h1 class="text-2xl font-bold">:= info</h1>
     </div>
 
-    <div class="markdown-body p-4 rounded-md" id="info-content" hx-get="http://localhost:8081/api/info" hx-trigger="load" hx-swap="innerHTML">
+    <div class="markdown-body p-4 rounded-md" id="info-content" hx-get="/api/info" hx-trigger="load" hx-swap="innerHTML">
         <p>Loading info content...</p>
     </div>
 </section>
