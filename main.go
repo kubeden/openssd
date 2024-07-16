@@ -10,13 +10,13 @@ import (
 
 func main() {
 	config := types.Config{
-		GithubUsername: "kubeden",
-		GithubRepo:     "kubeden",
-		ReadmeFile:     "README.md",
-		InfoFile:       "INFO.md",
-		XUserFullName:  "Kuberdenis",
-		XUserName:      "kubeden",
-		TemplateChoice: "default",
+		GithubUsername: getEnv("GITHUB_USERNAME", "kubeden"),
+		GithubRepo:     getEnv("GITHUB_REPO", "kubeden"),
+		ReadmeFile:     getEnv("README_FILE", "README.md"),
+		InfoFile:       getEnv("INFO_FILE", "INFO.md"),
+		XUserFullName:  getEnv("X_USER_FULL_NAME", "Kuberdenis"),
+		XUserName:      getEnv("X_USERNAME", "kubeden"),
+		TemplateChoice: getEnv("TEMPLATE_CHOICE", "ssi"),
 	}
 
 	// Start API server
