@@ -1,0 +1,1 @@
+This file is a placeholder for the /info page.
