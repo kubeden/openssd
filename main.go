@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/kubeden/openssd/go/api"
 	"github.com/kubeden/openssd/go/client"
@@ -30,4 +31,11 @@ func main() {
 	if err := client.StartServer(config); err != nil {
 		log.Fatalf("Client server failed to start: %v", err)
 	}
+}
+
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
 }
