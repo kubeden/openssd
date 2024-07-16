@@ -9,8 +9,7 @@ rm go1.22.5.linux-amd64.tar.gz
 echo "export PATH=$PATH:/usr/local/go/bin" > ~/.bashrc
 source ~/.bashrc
 
-apt install docker.io -y
-apt install docker-compose -y
+apt install docker.io docker-compose -y
 
 mkdir /var/www
 mkdir /var/www/openssd
