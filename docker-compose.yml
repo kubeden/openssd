@@ -15,7 +15,8 @@ services:
       - GITHUB_REPO=kubeden
       - README_FILE=README.md
       - INFO_FILE=INFO.md
-      - USER_NAME=Kuberdenis
+      - X_USER_FULL_NAME=Kuberdenis
+      - X_USERNAME=kubeden
       - TEMPLATE_CHOICE=ssi
 
   nginx:
