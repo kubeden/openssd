@@ -43,3 +43,36 @@ Then when you have everything set up, run the following command:
 ```
 curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/start.sh | bash
 ```
+
+## Setting a custom domain
+
+If you want to set a custom domain, go to your domain provider of choice and set the A record for
+
+- www.yourdomain.ext
+- yourdomain.ext
+
+to point to your server IP.
+
+After that open the `nginx.conf` file and edit the following line:
+
+```
+server_name localhost;
+```
+
+to
+
+```
+server_name yourdomain.ext www.yourdomain.ext;
+```
+
+the run the stop script:
+
+```
+curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/stop.sh | bash
+```
+
+and then the start script again:
+
+```
+curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/start.sh | bash
+```
