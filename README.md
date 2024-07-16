@@ -18,7 +18,13 @@ curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/install
 
 ## Configuration & Deployment
 
-To configure and deploy your openssd, open *docker-compose.yml* with a text editor of your choice and change the following strings:
+To configure and deploy your openssd, go to the openssd directory:
+
+```
+cd /var/www/openssd
+```
+
+open *docker-compose.yml* with a text editor of your choice and change the following strings:
 
 ```
 - GITHUB_USERNAME=kubeden
