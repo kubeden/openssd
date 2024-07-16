@@ -61,6 +61,9 @@ curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/stop.sh
 curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/start.sh | bash
 ```
 
+> Note: you can follow this guide to turn your cloned repository into your own fork and be able to push and store your articles: [link](https://gist.github.com/ElectricRCAircraftGuy/8ca9c04924ac11a50d48c2061d28b090)
+
+
 ## Setting a custom domain
 
 If you want to set a custom domain, go to your domain provider of choice and set the A record for
