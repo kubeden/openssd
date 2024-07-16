@@ -11,7 +11,7 @@ Openssd stands for Open (source) Super Simple Diary. Openssd is a plug-n-run pro
 To set up your environment, log into your server and run the following command:
 
 ```
-curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/setup.sh | bash
+curl -sSL https://raw.githubusercontent.com/kubeden/openssd/main/scripts/install.sh | bash
 ```
 
 ## Configuration & Deployment
