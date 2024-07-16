@@ -1,0 +1,21 @@
+{{ define "content" }}
+<article class="max-w-3xl mx-auto">
+    <div id="article-content" hx-get="http://localhost:8081/api/articles/{{ .Slug }}" hx-trigger="load" hx-target="#article-content" hx-swap="innerHTML">
+        <p>Loading article...</p>
+    </div>
+</article>
+
+<script>
+    htmx.on('#article-content', 'htmx:afterSwap', function(event) {
+        let article = JSON.parse(event.detail.xhr.response);
+        let html = `
+            <h1 class="text-4xl font-bold mb-4">${article.title}</h1>
+            <p class="text-gray-600 mb-8">${new Date(article.date).toLocaleDateString()}</p>
+            <div class="prose lg:prose-xl">
+                ${article.content}
+            </div>
+        `;
+        event.detail.target.innerHTML = html;
+    });
+</script>
+{{ end }}

@@ -1,0 +1,33 @@
+{{ define "content" }}
+<div class="container mx-auto px-4">
+    <h1 class="text-4xl font-bold mb-8">Blog Posts</h1>
+    
+    <div id="all-articles" hx-get="http://localhost:8081/api/articles" hx-trigger="load" hx-target="#all-articles" hx-swap="innerHTML">
+        <p>Loading articles...</p>
+    </div>
+</div>
+
+<script>
+    htmx.on('#all-articles', 'htmx:afterSwap', function(event) {
+        let articles = JSON.parse(event.detail.xhr.response);
+        let html = '';
+        
+        articles.forEach(article => {
+            html += `
+                <article class="bg-white shadow-lg rounded-lg overflow-hidden mb-8">
+                    <div class="p-6">
+                        <h2 class="text-2xl font-semibold mb-2">
+                            <a href="/blog/${article.slug}" class="text-blue-600 hover:text-blue-800">${article.title}</a>
+                        </h2>
+                        <p class="text-gray-600 mb-4">${new Date(article.date).toLocaleDateString()}</p>
+                        <p class="text-gray-700">${article.excerpt}</p>
+                        <a href="/blog/${article.slug}" class="mt-4 inline-block text-blue-600 hover:text-blue-800">Read more &rarr;</a>
+                    </div>
+                </article>
+            `;
+        });
+        
+        event.detail.target.innerHTML = html;
+    });
+</script>
+{{ end }}
