@@ -35,14 +35,26 @@ curl -sSL https://raw.githubusercontent.com/yourusername/blog-project/main/scrip
 
 ## Usage
 
-After installation, your blog will be accessible at `http://localhost:8080`.
+deploy server
+```
+apt update && apt upgrade -y
+sudo apt-get install build-essential procps curl file git
 
-To add or modify articles:
+wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf go1.22.5.linux-amd64.tar.gz
+rm go1.22.5.linux-amd64.tar.gz
+echo "export PATH=$PATH:/usr/local/go/bin" > ~/.bashrc
+source ~/.bashrc
 
-1. Clone your articles repository (the one specified in the `GIT_REPO_URL` environment variable)
-2. Add or edit Markdown files in the `articles` directory
-3. Commit and push your changes
-4. The blog will automatically update with the new content
+apt install nginx
+apt install docker.io
+apt install docker-compose
+
+cd /var/www
+git clone https://github.com/kubeden/openssd.git
+```
+
 
 ## Customization
 
@@ -52,24 +64,6 @@ To change the blog's appearance:
 
 1. Edit the HTML templates in the `ui/templates` directory
 2. Modify the Tailwind CSS classes to adjust the styling
-
-### Adding new pages
-
-To add new pages to your blog:
-
-1. Create a new HTML template in the `ui/templates` directory
-2. Add a new route handler in the `go/client/main.go` file
-3. Update the navigation menu in the templates to include the new page
-
-## Troubleshooting
-
-If you encounter any issues, please check the following:
-
-1. Ensure Docker is running
-2. Check if the containers are up with `docker-compose ps`
-3. View the logs with `docker-compose logs`
-
-For further assistance, please open an issue on the GitHub repository.
 
 ## License
 

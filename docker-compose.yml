@@ -2,11 +2,20 @@ version: '3'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080"
     volumes:
       - ./articles:/root/articles
+    environment:
+      - GITHUB_USERNAME=kubeden
+      - GITHUB_REPO=kubeden
+      - README_FILE=README.md
+      - INFO_FILE=INFO.md
+      - USER_NAME=Kuberdenis
+      - TEMPLATE_CHOICE=ssi
 
   nginx:
     image: nginx:alpine

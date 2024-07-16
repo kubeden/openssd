@@ -1,5 +1,5 @@
 # Build stage
-FROM golang:1.21 AS builder
+FROM golang:1.22.5 AS builder
 
 WORKDIR /app
 
@@ -28,14 +28,6 @@ COPY --from=builder /app/main .
 # Copy templates and static files
 COPY --from=builder /app/templates ./templates
 COPY --from=builder /app/static ./static
-
-# Environment variables
-ENV GITHUB_USERNAME=kubeden
-ENV GITHUB_REPO=kubeden
-ENV README_FILE=README.md
-ENV INFO_FILE=INFO.md
-ENV USER_NAME=Kuberdenis
-ENV TEMPLATE_CHOICE=ssi
 
 # Command to run the executable
 CMD ["./main"]
